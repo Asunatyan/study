@@ -5,7 +5,8 @@ import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
-public interface TbPermissionService{
+public interface TbPermissionService {
     List<TbPermission> selectUserPermissionByUserId(long userId);
 
 }
+

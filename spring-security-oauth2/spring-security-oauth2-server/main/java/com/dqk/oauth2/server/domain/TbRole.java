@@ -6,39 +6,33 @@ import javax.persistence.*;
 import lombok.Data;
 
 /**
- * 权限表
- */
+    * 角色表
+    */
 @Data
-@Table(name = "tb_permission")
-public class TbPermission implements Serializable {
+@Table(name = "tb_role")
+public class TbRole implements Serializable {
     @Id
     @Column(name = "id")
     @GeneratedValue(generator = "JDBC")
     private Long id;
 
     /**
-     * 父权限
+     * 父角色
      */
     @Column(name = "parent_id")
     private Long parentId;
 
     /**
-     * 权限名称
+     * 角色名称
      */
     @Column(name = "`name`")
     private String name;
 
     /**
-     * 权限英文名称
+     * 角色英文名称
      */
     @Column(name = "enname")
     private String enname;
-
-    /**
-     * 授权路径
-     */
-    @Column(name = "url")
-    private String url;
 
     /**
      * 备注
