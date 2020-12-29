@@ -1,11 +1,13 @@
 package com.dqk.oauth2.service.config;
 
+import com.dqk.oauth2.service.config.service.UserDetailsServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Configuration
@@ -15,6 +17,12 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Bean
+    @Override
+    public UserDetailsService userDetailsServiceBean() throws Exception {
+        return new UserDetailsServiceImpl();
+    }
+
+    @Bean
     public BCryptPasswordEncoder passwordEncoder() {
         // PasswordEncoderFactories.createDelegatingPasswordEncoder();
         return new BCryptPasswordEncoder();
@@ -22,12 +30,6 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        //这里就是通过账号密码什么的拿到授权码
-        auth.inMemoryAuthentication()
-                //创建两个用户
-                //.withUser("admin").password("123456").roles("ADMIN")
-                .withUser("admin").password(passwordEncoder().encode("123456")).roles("ADMIN")
-                .and()
-                .withUser("test").password(passwordEncoder().encode("123456")).roles("TEST");
+        auth.userDetailsService(userDetailsServiceBean());
     }
 }
