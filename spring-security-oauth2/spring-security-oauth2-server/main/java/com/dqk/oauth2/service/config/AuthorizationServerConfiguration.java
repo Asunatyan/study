@@ -1,28 +1,54 @@
 package com.dqk.oauth2.service.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.jdbc.DataSourceBuilder;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
+import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
+import org.springframework.security.oauth2.provider.ClientDetailsService;
+import org.springframework.security.oauth2.provider.client.JdbcClientDetailsService;
+import org.springframework.security.oauth2.provider.token.TokenStore;
+import org.springframework.security.oauth2.provider.token.store.JdbcTokenStore;
+
+import javax.sql.DataSource;
 
 @Configuration
 @EnableAuthorizationServer
 public class AuthorizationServerConfiguration extends AuthorizationServerConfigurerAdapter {
+
+    @Bean
+    @Primary
+    @ConfigurationProperties(prefix = "spring.datasource")
+    public DataSource dataSource(){
+        return DataSourceBuilder.create().build();
+    }
+
+    @Bean
+    public TokenStore tokenStore(){
+        return new JdbcTokenStore(dataSource());
+    }
+
+    @Bean
+    public ClientDetailsService jdbcClientDetailsService(){
+        return new JdbcClientDetailsService(dataSource());
+    }
 
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-        clients
-                .inMemory()//客户端信息放入内存
-                .withClient("client")//clientId
-                //.secret("secret")//secret
-                .secret(bCryptPasswordEncoder.encode("secret"))//secret
-                .authorizedGrantTypes("authorization_code")//授权类型(4种的一种
-                .scopes("app")//授权的范围,就是能获取到的权限
-                .redirectUris("http://www.baidu.com");//授权码发送的回调地址
+        clients.withClientDetails(jdbcClientDetailsService());
+    }
+
+    @Override
+    public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
+        endpoints.tokenStore(tokenStore());
     }
 }
