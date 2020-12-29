@@ -26,7 +26,6 @@
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>
 
     <licenses>
@@ -41,7 +40,7 @@
             <dependency>
                 <groupId>com.dqk</groupId>
                 <artifactId>spring-security-oauth2-dependencies</artifactId>
-                <version>${project.parent.version}</version>
+                <version>${project.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
