@@ -12,6 +12,7 @@
         <spring-cloud.version>Hoxton.SR9</spring-cloud.version>
         <hikaricp.version>3.4.2</hikaricp.version>
         <mysql.version>5.1.38</mysql.version>
+        <tk.mybatis.version>2.1.5</tk.mybatis.version>
     </properties>
 
     <licenses>
@@ -55,6 +56,11 @@
                 <version>${mysql.version}</version>
             </dependency>
 
+            <dependency>
+                <groupId>tk.mybatis</groupId>
+                <artifactId>mapper-spring-boot-starter</artifactId>
+                <version>${tk.mybatis.version}</version>
+            </dependency>
 
         </dependencies>
     </dependencyManagement>
