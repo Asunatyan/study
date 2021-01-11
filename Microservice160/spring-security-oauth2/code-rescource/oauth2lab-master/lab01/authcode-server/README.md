@@ -7,7 +7,7 @@
 
 浏览器请求：
 
-http://localhost:8080/oauth/authorize?client_id=clientapp&redirect_uri=http://localhost:9001/callback&response_type=code&scope=read_userinfo
+http://localhost:9090/oauth/authorize?client_id=clientapp&redirect_uri=http://localhost:9001/callback&response_type=code&scope=read_userinfo
 
 **注意：state参数暂忽略**
 
