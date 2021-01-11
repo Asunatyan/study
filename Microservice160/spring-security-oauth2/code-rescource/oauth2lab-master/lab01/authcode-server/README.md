@@ -22,6 +22,10 @@ curl -X POST --user clientapp:112233 http://localhost:8080/oauth/token -H
 "code=8uYpdo&grant_type=authorization_code&redirect_uri=http%3A%2F%2Flocalh
 ost%3A9001%2Fcallback&scope=read_userinfo"
 
+使用postman的时候注意需要选择anthoriztion  
+type是 BaseAuth  
+填写username为withClient值 password为secret
+
 案例响应：
 
 ```json
@@ -37,6 +41,11 @@ ost%3A9001%2Fcallback&scope=read_userinfo"
 ### 3. 调用API
 
 curl -X GET http://localhost:8080/api/userinfo -H "authorization: Bearer 36cded80-b6f5-43b7-bdfc-594788a24530"
+
+
+使用postman的时候注意需要选择anthoriztion  
+type是 bearerToken
+
 
 案例响应：
 
