@@ -15,12 +15,12 @@ public class OAuth2AuthorizationServer extends
     public void configure(ClientDetailsServiceConfigurer clients)
             throws Exception {
         clients.inMemory()
-            .withClient("clientapp")
-            .secret("112233")
-            .redirectUris("http://localhost:9001/callback")
+            .withClient("clientapp")//客户端类型
+            .secret("112233")//客户端secret
+            .redirectUris("http://localhost:9001/callback")//授权码回调地址?
             // 授权码模式
-            .authorizedGrantTypes("authorization_code")
-            .scopes("read_userinfo", "read_contacts");
+            .authorizedGrantTypes("authorization_code")//授权码模式
+            .scopes("read_userinfo", "read_contacts");//授权的范围
     }
 
 }

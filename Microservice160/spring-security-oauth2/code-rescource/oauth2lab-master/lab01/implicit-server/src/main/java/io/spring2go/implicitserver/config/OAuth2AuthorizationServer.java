@@ -14,8 +14,9 @@ public class OAuth2AuthorizationServer extends
     @Override
     public void configure(ClientDetailsServiceConfigurer clients)
             throws Exception {
+
         clients.inMemory()
-            .withClient("clientapp")
+            .withClient("clientapp-implicit")
             .secret("112233")
             .redirectUris("http://localhost:9001/callback")
             // 简化模式
