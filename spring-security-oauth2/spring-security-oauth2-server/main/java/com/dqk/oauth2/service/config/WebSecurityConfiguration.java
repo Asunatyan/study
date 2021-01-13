@@ -30,6 +30,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        //自己实现UserDetailsService
         auth.userDetailsService(userDetailsServiceBean());
     }
 }
