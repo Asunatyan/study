@@ -3,9 +3,14 @@
 
 # Log file
 *.log
+*.iml
+*.cmd
+*mvnw
+mvnw
 
 # BlueJ files
 *.ctxt
+.idea
 
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/

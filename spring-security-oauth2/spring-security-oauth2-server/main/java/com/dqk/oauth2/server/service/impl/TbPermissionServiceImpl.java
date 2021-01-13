@@ -9,7 +9,7 @@ import com.dqk.oauth2.server.service.TbPermissionService;
 import java.util.List;
 
 @Service
-public class TbPermissionServiceImpl implements TbPermissionService{
+public class TbPermissionServiceImpl implements TbPermissionService {
 
     @Resource
     private TbPermissionMapper tbPermissionMapper;
@@ -19,3 +19,4 @@ public class TbPermissionServiceImpl implements TbPermissionService{
         return tbPermissionMapper.selectUserPermissionByUserId(userId);
     }
 }
+

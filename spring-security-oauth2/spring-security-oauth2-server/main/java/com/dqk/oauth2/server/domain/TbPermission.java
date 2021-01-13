@@ -6,8 +6,8 @@ import javax.persistence.*;
 import lombok.Data;
 
 /**
-    * 权限表
-    */
+ * 权限表
+ */
 @Data
 @Table(name = "tb_permission")
 public class TbPermission implements Serializable {
