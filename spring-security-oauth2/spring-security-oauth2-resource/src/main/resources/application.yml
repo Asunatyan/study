@@ -17,6 +17,7 @@ spring:
       connection-timeout: 30000
       connection-test-query: SELECT 1
 
+#配置认证服务器
 security:
   oauth2:
     client:

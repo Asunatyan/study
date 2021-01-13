@@ -21,6 +21,7 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
                 .and()
                 .authorizeRequests()
                 .antMatchers("/").hasAuthority("SystemContent")
+                //路径 - 需要的权限
                 .antMatchers("/view/**").hasAuthority("SystemContentView")
                 .antMatchers("/insert/**").hasAuthority("SystemContentInsert")
                 .antMatchers("/update/**").hasAuthority("SystemContentUpdate")
