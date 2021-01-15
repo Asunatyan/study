@@ -46,14 +46,13 @@ public class CodeGenerator {
 
         // 全局配置
         GlobalConfig gc = new GlobalConfig();
-        String projectPath = System.getProperty("user.dir");
+        String projectPath = System.getProperty("user.dir");//工作目录
         gc.setOutputDir(projectPath + "/src/main/java");
         gc.setAuthor("dqk");
         gc.setOpen(false);
-        gc.setBaseResultMap(true);
-        gc.setBaseColumnList(true);
+        gc.setBaseResultMap(true);//生产resultMap
+        gc.setBaseColumnList(true);//生产数据库中的列
         /*gc.setIdType(IdType.NONE);*/
-        // gc.setSwagger2(true); 实体属性 Swagger2 注解
         mpg.setGlobalConfig(gc);
 
         // 数据源配置
@@ -64,6 +63,7 @@ public class CodeGenerator {
         dsc.setUsername("dev");
         dsc.setPassword("Wingto@2020");
 
+        //重写类型转换器  比如：数据库是timestamp 那么就对应java中的string  bigint对应BIgInterger
         dsc.setTypeConvert((globalConfig, fieldType) -> {
             String t = fieldType.toLowerCase();
             if (t.contains("timestamp")) {
@@ -148,13 +148,12 @@ public class CodeGenerator {
         // 公共父类
         //strategy.setSuperControllerClass("你自己的父类控制器,没有就不用设置!");
         // 写于父类中的公共字段
-        strategy.setSuperEntityColumns("createDate");
+        strategy.setSuperEntityColumns("createDate");//排除数据库中的字段
         strategy.setSuperEntityColumns("updateDate");
         //String[] split = scanner("表名，多个英文逗号分割").split(",");
         strategy.setInclude("web_scene_model,web_scene_action".split(","));
         strategy.setControllerMappingHyphenStyle(true);
         strategy.setTablePrefix(pc.getModuleName() + "_");
-
 
         mpg.setStrategy(strategy);
         mpg.setTemplateEngine(new FreemarkerTemplateEngine());
