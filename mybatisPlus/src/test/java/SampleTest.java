@@ -1,19 +1,14 @@
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.extension.conditions.query.QueryChainWrapper;
 import com.dqk.test.MybatisPlusTestApplication;
 import com.dqk.test.entity.Userinfo;
 import com.dqk.test.mapper.UserinfoMapper;
 import com.dqk.test.service.IUserinfoService;
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 @RunWith(SpringRunner.class)
