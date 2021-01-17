@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wingtoweb.apicenter.mapper.UserinfoMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.wingtoweb.apicenter.entity.Userinfo">
+        <id column="id" property="id" />
+        <result column="remark" property="remark" />
+        <result column="name" property="name" />
+        <result column="age" property="age" />
+        <result column="phone" property="phone" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        remark,
+        id, name, age, phone
+    </sql>
+
+</mapper>
