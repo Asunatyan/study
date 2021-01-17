@@ -1,4 +1,4 @@
-package com.dqk.test;
+package com.dqk.test.generator;
 
 import com.baomidou.mybatisplus.core.exceptions.MybatisPlusException;
 import com.baomidou.mybatisplus.core.toolkit.StringPool;
@@ -11,8 +11,6 @@ import com.baomidou.mybatisplus.generator.config.rules.DbColumnType;
 import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
 import com.baomidou.mybatisplus.generator.engine.FreemarkerTemplateEngine;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,8 +18,7 @@ import java.util.Scanner;
 
 
 // 演示例子，执行 main 方法控制台输入模块表名回车自动生成对应项目目录中
-public class CodeGenerator2 {
-    private static final Logger logger = LoggerFactory.getLogger(AutoGenerator.class);
+public class CodeGenerator {
 
     /**
      * <p>
@@ -44,54 +41,28 @@ public class CodeGenerator2 {
 
     public static void main(String[] args) {
         // 代码生成器
-//        AutoGenerator mpg = new MyAutoGenerator();
-        AutoGenerator mpg = new AutoGenerator()/*{
-            @Override
-            public void execute() {
-                logger.debug("==========================准备生成文件...==========================");
-                // 初始化配置
-                if (null == config) {
-                    config = new MyConfigBuidler(getPackageInfo(), getDataSource(), getStrategy(), getTemplate(), getGlobalConfig());
-                    if (null != injectionConfig) {
-                        injectionConfig.setConfig(config);
-                    }
-                }
-                if (null == getTemplateEngine()) {
-                    // 为了兼容之前逻辑，采用 Velocity 引擎 【 默认 】
-                    super.setTemplateEngine(new VelocityTemplateEngine());
-                }
-                // 模板引擎初始化执行文件输出
-                getTemplateEngine().init(this.pretreatmentConfigBuilder(config)).mkdirs().batchOutput().open();
-                logger.debug("==========================文件生成完成！！！==========================");
-
-            }
-        }*/;
+        AutoGenerator mpg = new AutoGenerator();
 
         // 全局配置
         GlobalConfig gc = new GlobalConfig();
-        String projectPath = System.getProperty("user.dir");
+        String projectPath = System.getProperty("user.dir");//工作目录
         gc.setOutputDir(projectPath + "/src/main/java");
         gc.setAuthor("dqk");
         gc.setOpen(false);
-        gc.setBaseResultMap(true);
-        gc.setBaseColumnList(true);
+        gc.setBaseResultMap(true);//生产resultMap
+        gc.setBaseColumnList(true);//生产数据库中的列
         /*gc.setIdType(IdType.NONE);*/
-        // gc.setSwagger2(true); 实体属性 Swagger2 注解
         mpg.setGlobalConfig(gc);
 
         // 数据源配置
         DataSourceConfig dsc = new DataSourceConfig();
-        /*dsc.setUrl("jdbc:mysql://172.16.1.155:3306/wingto-cloud?useUnicode=true&useSSL=false&characterEncoding=utf8");
+        dsc.setUrl("jdbc:mysql://172.16.1.155:3306/wingto-cloud?useUnicode=true&useSSL=false&characterEncoding=utf8");
         // dsc.setSchemaName("public");
         dsc.setDriverName("com.mysql.jdbc.Driver");
         dsc.setUsername("dev");
-        dsc.setPassword("Wingto@2020");*/
-        dsc.setUrl("jdbc:mysql://129.211.65.95:3306/study?useUnicode=true&useSSL=false&characterEncoding=utf8");
-        // dsc.setSchemaName("public");
-        dsc.setDriverName("com.mysql.jdbc.Driver");
-        dsc.setUsername("root");
-        dsc.setPassword("Qq254497414.");
+        dsc.setPassword("Wingto@2020");
 
+        //重写类型转换器  比如：数据库是timestamp 那么就对应java中的string  bigint对应BIgInterger
         dsc.setTypeConvert((globalConfig, fieldType) -> {
             String t = fieldType.toLowerCase();
             if (t.contains("timestamp")) {
@@ -103,20 +74,6 @@ public class CodeGenerator2 {
             //其它字段采用默认转换（非mysql数据库可以使用其它默认的数据库转换器）
             return new MySqlTypeConvert().processTypeConvert(globalConfig, fieldType);
         });
-
-        /*        dsc.setDbQuery(new MySqlQuery() {
-
-         *//**
-         * 重写父类预留查询自定义字段<br>
-         * 这里查询的 SQL 对应父类 tableFieldsSql 的查询字段，默认不能满足你的需求请重写它<br>
-         * 模板中调用：  table.fields 获取所有字段信息，
-         * 然后循环字段获取 field.customMap 从 MAP 中获取注入字段如下  NULL 或者 PRIVILEGES
-         *//*
-            @Override
-            public String[] fieldCustom() {
-                return new String[]{"NULL", "PRIVILEGES"};
-            }
-        });*/
 
         mpg.setDataSource(dsc);
 
@@ -190,12 +147,12 @@ public class CodeGenerator2 {
         // 公共父类
         //strategy.setSuperControllerClass("你自己的父类控制器,没有就不用设置!");
         // 写于父类中的公共字段
-        strategy.setSuperEntityColumns("remark");
+        strategy.setSuperEntityColumns("createDate");//排除数据库中的字段
+        strategy.setSuperEntityColumns("updateDate");
         //String[] split = scanner("表名，多个英文逗号分割").split(",");
-        strategy.setInclude("userinfo".split(","));
+        strategy.setInclude("web_scene_model,web_scene_action".split(","));
         strategy.setControllerMappingHyphenStyle(true);
         strategy.setTablePrefix(pc.getModuleName() + "_");
-
 
         mpg.setStrategy(strategy);
         mpg.setTemplateEngine(new FreemarkerTemplateEngine());

@@ -1,9 +1,7 @@
 package com.dqk.test.mapper;
 
-import com.dqk.test.entity.Userinfo;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-
-import javax.annotation.Resource;
+import com.dqk.test.entity.Userinfo;
 
 /**
  * <p>

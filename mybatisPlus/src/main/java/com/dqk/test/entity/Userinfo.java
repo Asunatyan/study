@@ -1,6 +1,6 @@
 package com.dqk.test.entity;
 
-import com.dqk.test.BaseDto;
+import com.dqk.test.generator.BaseDto;
 
 /**
  * <p>
@@ -10,7 +10,7 @@ import com.dqk.test.BaseDto;
  * @author dqk
  * @since 2021-01-17
  */
-public class Userinfo extends BaseDto {
+public class Userinfo{
 
     private static final long serialVersionUID = 1L;
 

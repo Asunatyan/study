@@ -1,4 +1,4 @@
-package com.dqk.test;
+package com.dqk.test.generator;
 
 import java.io.Serializable;
 
