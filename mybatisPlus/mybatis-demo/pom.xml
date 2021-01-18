@@ -11,7 +11,7 @@
     </parent>
 
     <groupId>com.dqk</groupId>
-    <artifactId>mybatisPlus</artifactId>
+    <artifactId>mybatis-demo</artifactId>
     <version>1.0.0-SNAPSHOT</version>
 
     <dependencies>
