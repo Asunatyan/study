@@ -5,18 +5,15 @@
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.dqk.test.entity.Userinfo">
         <id column="id" property="id" />
-        <result column="remark" property="remark" />
         <result column="name" property="name" />
         <result column="age" property="age" />
         <result column="phone" property="phone" />
+        <result column="update_date" property="updateDate" typeHandler="com.dqk.test.typeHandler.MyTypeHandler" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, name, age, remark,phone
+        id, name, age, phone, update_date
     </sql>
-    <select id="selectList123545" resultMap="BaseResultMap">
-        select <include refid="Base_Column_List"/> from userinfo;
-    </select>
 
 </mapper>

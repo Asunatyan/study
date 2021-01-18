@@ -70,7 +70,7 @@ public class CodeGenerator2 {
         // 全局配置
         GlobalConfig gc = new GlobalConfig();
         String projectPath = System.getProperty("user.dir");
-        gc.setOutputDir(projectPath + "/src/main/java");
+        gc.setOutputDir(projectPath + "/mybatis-demo/src/main/java");
         gc.setAuthor("dqk");
         gc.setOpen(false);
         gc.setBaseResultMap(true);
@@ -147,7 +147,7 @@ public class CodeGenerator2 {
             @Override
             public String outputFile(TableInfo tableInfo) {
                 // 自定义输出文件名 ， 如果你 Entity 设置了前后缀、此处注意 xml 的名称会跟着发生变化！！
-                return projectPath + "/src/main/resources/mapper/" + pc.getModuleName()
+                return projectPath + "/mybatis-demo/src/main/resources/mapper/" + pc.getModuleName()
                         + "/" + tableInfo.getEntityName() + "Mapper" + StringPool.DOT_XML;
             }
         });
@@ -184,7 +184,7 @@ public class CodeGenerator2 {
         StrategyConfig strategy = new StrategyConfig();
         strategy.setNaming(NamingStrategy.underline_to_camel);
         strategy.setColumnNaming(NamingStrategy.underline_to_camel);
-        strategy.setSuperEntityClass(BaseDto.class);
+        /*strategy.setSuperEntityClass(BaseDto.class);*/
         strategy.setEntityLombokModel(false);
         strategy.setRestControllerStyle(true);
         // 公共父类

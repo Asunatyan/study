@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
  * </p>
  *
  * @author dqk
- * @since 2021-01-17
+ * @since 2021-01-18
  */
 @RestController
 @RequestMapping("/userinfo")

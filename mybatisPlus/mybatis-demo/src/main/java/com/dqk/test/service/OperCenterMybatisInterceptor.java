@@ -1,4 +1,4 @@
-/*
+package com.dqk.test.service;/*
 package com.dqk.test.service;
 
 import com.dqk.test.mybatis.MybatisInterceptor;

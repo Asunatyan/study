@@ -1,47 +1,47 @@
 package com.dqk.test.entity;
 
-import com.dqk.test.generator.BaseDto;
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.dqk.test.typeHandler.MyTypeHandler;
+
+import java.util.Date;
 
 /**
  * <p>
- * 
+ *
  * </p>
  *
  * @author dqk
- * @since 2021-01-17
+ * @since 2021-01-18
  */
-public class Userinfo{
+public class Userinfo {
 
     private static final long serialVersionUID = 1L;
 
     /**
      * 主键
      */
+    @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
     /**
      * 姓名
      */
     private String name;
-    private String remark;
 
     /**
      * 年龄，普通索引列
      */
     private Integer age;
 
-    public String getRemark() {
-        return remark;
-    }
-
-    public void setRemark(String remark) {
-        this.remark = remark;
-    }
-
     /**
      * 手机，唯一索引列
      */
     private String phone;
+
+    @TableField(typeHandler = MyTypeHandler.class)
+    private Date updateDate;
 
     public Integer getId() {
         return id;
@@ -50,6 +50,7 @@ public class Userinfo{
     public void setId(Integer id) {
         this.id = id;
     }
+
     public String getName() {
         return name;
     }
@@ -57,6 +58,7 @@ public class Userinfo{
     public void setName(String name) {
         this.name = name;
     }
+
     public Integer getAge() {
         return age;
     }
@@ -64,6 +66,7 @@ public class Userinfo{
     public void setAge(Integer age) {
         this.age = age;
     }
+
     public String getPhone() {
         return phone;
     }
@@ -72,13 +75,22 @@ public class Userinfo{
         this.phone = phone;
     }
 
+    public Date getUpdateDate() {
+        return updateDate;
+    }
+
+    public void setUpdateDate(Date updateDate) {
+        this.updateDate = updateDate;
+    }
+
     @Override
     public String toString() {
         return "Userinfo{" +
-            "id=" + id +
-            ", name=" + name +
-            ", age=" + age +
-            ", phone=" + phone +
-        "}";
+                "id=" + id +
+                ", name=" + name +
+                ", age=" + age +
+                ", phone=" + phone +
+                ", updateDate=" + updateDate +
+                "}";
     }
 }
