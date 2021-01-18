@@ -3,6 +3,7 @@ import com.dqk.test.MybatisPlusTestApplication;
 import com.dqk.test.entity.Userinfo;
 import com.dqk.test.mapper.UserinfoMapper;
 import com.dqk.test.service.IUserinfoService;
+import com.github.pagehelper.PageHelper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,8 +26,13 @@ public class SampleTest {
         System.out.println(("----- selectAll method test ------"));
         QueryWrapper<Userinfo> queryWrapper = new QueryWrapper<>();
         queryWrapper.gt("id", "90");
+        PageHelper.startPage(1, 2);
         List<Userinfo> userList = userinfoMapper.selectList(queryWrapper);
-        userList.forEach(System.out::println);
+        //userList.forEach(System.out::println);
+        /*PageHelper.startPage(0, 2);
+        List<Userinfo> userList = userinfoMapper.selectList123545();
+
+        */
 
         /*List<Userinfo> bathUserInfor = new ArrayList<>();
         for (int i = 30; i < 100; i++) {

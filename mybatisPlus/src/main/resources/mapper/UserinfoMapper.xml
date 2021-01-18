@@ -15,5 +15,8 @@
     <sql id="Base_Column_List">
         id, name, age, remark,phone
     </sql>
+    <select id="selectList123545" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"/> from userinfo;
+    </select>
 
 </mapper>
