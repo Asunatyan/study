@@ -4,16 +4,20 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.dqk.test.entity.Userinfo">
-        <id column="id" property="id" />
-        <result column="name" property="name" />
-        <result column="age" property="age" />
-        <result column="phone" property="phone" />
-        <result column="update_date" property="updateDate" typeHandler="com.dqk.test.typeHandler.MyTypeHandler" />
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="age" property="age"/>
+        <result column="phone" property="phone"/>
+        <!-- jdbcType="TIMESTAMP" 必须有这个自定义类型转换器才会有用不知道为什么-->
+        <result column="update_date" property="updateDate" jdbcType="TIMESTAMP"/>
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
         id, name, age, phone, update_date
     </sql>
+    <select id="selectFromUser" resultMap="BaseResultMap">
+        select * from userinfo limit 1;
+    </select>
 
 </mapper>

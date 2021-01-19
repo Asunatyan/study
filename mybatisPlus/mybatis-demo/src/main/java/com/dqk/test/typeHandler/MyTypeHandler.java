@@ -1,15 +1,17 @@
 package com.dqk.test.typeHandler;
 
-import org.apache.ibatis.type.BaseTypeHandler;
-import org.apache.ibatis.type.JdbcType;
+import org.apache.ibatis.type.*;
 
 import java.sql.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class MyTypeHandler extends BaseTypeHandler<String> {
+@MappedTypes({String.class})
+@MappedJdbcTypes(JdbcType.TIMESTAMP)
+public class MyTypeHandler implements TypeHandler<String> {
 
+/*
 
     public MyTypeHandler() {
     }
@@ -17,14 +19,7 @@ public class MyTypeHandler extends BaseTypeHandler<String> {
     @Override
     public void setNonNullParameter(PreparedStatement ps, int i, String parameter, JdbcType jdbcType) throws SQLException {
 
-        SimpleDateFormat dataFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        try {
-            Date parse = dataFormat.parse(parameter);
-            ps.setTimestamp(i, new Timestamp(parse.getTime()));
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
+        ps.setString(i, parameter);
 
     }
 
@@ -57,16 +52,17 @@ public class MyTypeHandler extends BaseTypeHandler<String> {
             return null;
         }
     }
+*/
 
 
+    private static final SimpleDateFormat dataFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-    /*public MyTypeHandler() {
+    public MyTypeHandler() {
     }
 
     @Override
     public void setParameter(PreparedStatement preparedStatement, int i, String s, JdbcType jdbcType) throws SQLException {
 
-        SimpleDateFormat dataFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         try {
             Date parse = dataFormat.parse(s);
             preparedStatement.setTimestamp(i, new Timestamp(parse.getTime()));
@@ -79,7 +75,6 @@ public class MyTypeHandler extends BaseTypeHandler<String> {
     public String getResult(ResultSet resultSet, String s) throws SQLException {
         Timestamp sqlTimestamp = resultSet.getTimestamp(s);
         if (sqlTimestamp != null) {
-            SimpleDateFormat dataFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             return dataFormat.format(new Date(sqlTimestamp.getTime()));
         } else {
             return null;
@@ -90,7 +85,6 @@ public class MyTypeHandler extends BaseTypeHandler<String> {
     public String getResult(ResultSet resultSet, int i) throws SQLException {
         Timestamp sqlTimestamp = resultSet.getTimestamp(i);
         if (sqlTimestamp != null) {
-            SimpleDateFormat dataFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             return dataFormat.format(new Date(sqlTimestamp.getTime()));
         } else {
             return null;
@@ -101,11 +95,10 @@ public class MyTypeHandler extends BaseTypeHandler<String> {
     public String getResult(CallableStatement cs, int columnIndex) throws SQLException {
         Timestamp sqlTimestamp = cs.getTimestamp(columnIndex);
         if (sqlTimestamp != null) {
-            SimpleDateFormat dataFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             return dataFormat.format(new Date(sqlTimestamp.getTime()));
         } else {
             return null;
         }
-    }*/
+    }
 
 }

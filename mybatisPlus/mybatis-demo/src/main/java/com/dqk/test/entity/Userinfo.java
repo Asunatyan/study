@@ -3,7 +3,10 @@ package com.dqk.test.entity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler;
 import com.dqk.test.typeHandler.MyTypeHandler;
+import org.apache.ibatis.type.JdbcType;
 
 import java.util.Date;
 
@@ -41,7 +44,7 @@ public class Userinfo {
     private String phone;
 
     @TableField(typeHandler = MyTypeHandler.class)
-    private Date updateDate;
+    private String updateDate;
 
     public Integer getId() {
         return id;
@@ -75,11 +78,11 @@ public class Userinfo {
         this.phone = phone;
     }
 
-    public Date getUpdateDate() {
+    public String getUpdateDate() {
         return updateDate;
     }
 
-    public void setUpdateDate(Date updateDate) {
+    public void setUpdateDate(String updateDate) {
         this.updateDate = updateDate;
     }
 

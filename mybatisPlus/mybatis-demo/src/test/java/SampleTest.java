@@ -23,11 +23,15 @@ public class SampleTest {
 
     @Test
     public void testSelect() {
-        System.out.println(("----- selectAll method test ------"));
+        /*System.out.println(("----- selectAll method test ------"));
         QueryWrapper<Userinfo> queryWrapper = new QueryWrapper<>();
         queryWrapper.gt("id", "90");
-        PageHelper.startPage(1, 2);
-        List<Userinfo> userList = userinfoMapper.selectList(queryWrapper);
+        //PageHelper.startPage(1, 2);
+        List<Userinfo> userList = userinfoMapper.selectList(queryWrapper);*/
+        List<Userinfo> userinfoList = userinfoMapper.selectFromUser();
+        System.out.println(userinfoList.toString());
+
+
         //userList.forEach(System.out::println);
         /*PageHelper.startPage(0, 2);
         List<Userinfo> userList = userinfoMapper.selectList123545();
