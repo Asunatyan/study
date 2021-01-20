@@ -23,12 +23,12 @@ public class SampleTest {
 
     @Test
     public void testSelect() {
-        /*System.out.println(("----- selectAll method test ------"));
+        System.out.println(("----- selectAll method test ------"));
         QueryWrapper<Userinfo> queryWrapper = new QueryWrapper<>();
-        queryWrapper.gt("id", "90");
+        queryWrapper.select("id").eq("id", "90");
         //PageHelper.startPage(1, 2);
-        List<Userinfo> userList = userinfoMapper.selectList(queryWrapper);*/
-        List<Userinfo> userinfoList = userinfoMapper.selectFromUser();
+        List<Userinfo> userList = userinfoMapper.selectList(queryWrapper);
+        List<Userinfo> userinfoList = userinfoService.list();
         System.out.println(userinfoList.toString());
 
 
