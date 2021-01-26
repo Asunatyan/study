@@ -4,11 +4,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.Assert;
 import org.springframework.util.StopWatch;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.Mapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
+import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.ThreadLocalRandom;
@@ -104,8 +104,34 @@ public class Demo02 {
 
 
     public static void main(String[] args) {
-        ConcurrentHashMap<String, LongAdder> freqs = new ConcurrentHashMap<>(ITEM_COUNT);
-        LongAdder key = freqs.computeIfAbsent("key", k -> new LongAdder());
-        key.increment();//value++
+/*        ConcurrentHashMap<String, LongAdder> freqs = new ConcurrentHashMap<>(ITEM_COUNT);
+
+        freqs.putIfAbsent();
+        freqs.computeIfAbsent()*/
+
+        //伪随机
+       /*  是通过种子就是产生随机数的第一次使用值,机制是通过一个函数,将这个种子的值转化为随机数空间中的某一个点上,并且产生的随机数均匀的散布在空间中。
+         以后产生的随机数都与前一个随机数有关。*/
+        /*System.out.println("-----------------------伪随机-----------------------");
+        Random r = new Random(100);
+        System.out.println(r.nextInt());
+        Random r1 = new Random(100);
+        System.out.println(r1.nextInt());
+        System.out.println(r1.nextInt());
+        System.out.println(r.nextInt());
+
+        Random r2 = new Random(101);
+        System.out.println(r2.nextInt());
+        Random r3 = new Random(101);
+        System.out.println(r3.nextInt());
+
+        System.out.println("----------------------真随机------------------------");
+        System.out.println(Math.random());
+        System.out.println(Math.random());
+        System.out.println(Math.random());
+        System.out.println(Math.random());
+        System.out.println(Math.random());
+        System.out.println(Math.random());
+*/
     }
 }
