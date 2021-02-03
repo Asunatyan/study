@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -32,13 +33,18 @@ public class ThreadPoolOOMController {
     @GetMapping("oom1")
     public void oom1() throws InterruptedException {
 
+        //执行器,线程池(Executors)
         ThreadPoolExecutor threadPool = (ThreadPoolExecutor) Executors.newFixedThreadPool(1);
         printStats(threadPool);
         for (int i = 0; i < 100000000; i++) {
             threadPool.execute(() -> {
                 String payload = IntStream.rangeClosed(1, 1000000)
                         .mapToObj(__ -> "a")
-                        .collect(Collectors.joining("")) + UUID.randomUUID().toString();
+                        .collect(
+                                //joining(CharSequence delimiter)返回一个 Collector ，按照遇到的顺序连接由指定的分隔符分隔的输入元素。
+                                //String collect = IntStream.rangeClosed(1, 4).mapToObj(i -> "test" + i).collect(Collectors.joining(","));//返回test1,test2,test3,test4
+                                Collectors.joining("")
+                        ) + UUID.randomUUID().toString();
                 try {
                     TimeUnit.HOURS.sleep(1);
                 } catch (InterruptedException e) {
@@ -49,6 +55,10 @@ public class ThreadPoolOOMController {
 
         threadPool.shutdown();
         threadPool.awaitTermination(1, TimeUnit.HOURS);
+    }
+
+    public static void main(String[] args) {
+        System.out.println("");
     }
 
     @GetMapping("oom2")
@@ -72,7 +82,9 @@ public class ThreadPoolOOMController {
 
     @GetMapping("right")
     public int right() throws InterruptedException {
+        //使用一个计数器跟踪完成的任务数
         AtomicInteger atomicInteger = new AtomicInteger();
+        //创建一个具有2个核心线程、5个最大线程，使用容量为10的ArrayBlockingQueue阻塞队列作为工作队列的线程池，使用默认的AbortPolicy拒绝策略
         ThreadPoolExecutor threadPool = new ThreadPoolExecutor(
                 2, 5,
                 5, TimeUnit.SECONDS,
@@ -81,6 +93,7 @@ public class ThreadPoolOOMController {
                 new ThreadPoolExecutor.AbortPolicy());
         //threadPool.allowCoreThreadTimeOut(true);
         printStats(threadPool);
+        //每隔1秒提交一次，一共提交20次任务
         IntStream.rangeClosed(1, 20).forEach(i -> {
             try {
                 TimeUnit.SECONDS.sleep(1);
@@ -91,6 +104,7 @@ public class ThreadPoolOOMController {
             try {
                 threadPool.submit(() -> {
                     log.info("{} started", id);
+                    //每个任务耗时10秒
                     try {
                         TimeUnit.SECONDS.sleep(10);
                     } catch (InterruptedException e) {
@@ -98,6 +112,7 @@ public class ThreadPoolOOMController {
                     log.info("{} finished", id);
                 });
             } catch (Exception ex) {
+                //提交出现异常的话，打印出错信息并为计数器减一
                 log.error("error submitting task {}", id, ex);
                 atomicInteger.decrementAndGet();
             }
