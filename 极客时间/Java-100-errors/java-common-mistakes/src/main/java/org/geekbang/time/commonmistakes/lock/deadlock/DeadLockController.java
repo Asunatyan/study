@@ -30,6 +30,7 @@ public class DeadLockController {
         IntStream.range(0, 10).forEach(i -> items.put("item" + i, new Item("item" + i)));
     }
 
+    //创建订单
     private boolean createOrder(List<Item> order) {
         List<ReentrantLock> locks = new ArrayList<>();
 
@@ -38,6 +39,7 @@ public class DeadLockController {
                 if (item.lock.tryLock(10, TimeUnit.SECONDS)) {
                     locks.add(item.lock);
                 } else {
+                    //解锁,因为别的商品会拿到锁,但是当前的商品没有拿到锁,那么整个购物车的锁都要清理掉
                     locks.forEach(ReentrantLock::unlock);
                     return false;
                 }
@@ -52,25 +54,35 @@ public class DeadLockController {
         return true;
     }
 
+    //创建购物车
     private List<Item> createCart() {
-        return IntStream.rangeClosed(1, 3)
+        return IntStream.rangeClosed(1, 3)//从 startInclusive （含）的顺序排列 IntStream到 endInclusive （含），增量步长为1
+                //map翻译成映射,转换
                 .mapToObj(i -> "item" + ThreadLocalRandom.current().nextInt(items.size()))
-                .map(name -> items.get(name)).collect(Collectors.toList());
+                .map(name -> items.get(name)).collect(Collectors.toList());//从购物车里面随机取3个商品
+    }
+
+
+    public static void main(String[] args) {
+        ReentrantLock reentrantLock = new ReentrantLock();
+        reentrantLock.unlock();
+
     }
 
     @GetMapping("wrong")
     public long wrong() {
         long begin = System.currentTimeMillis();
-        long success = IntStream.rangeClosed(1, 100).parallel()
+        long success = IntStream.rangeClosed(1, 100).parallel()//返回平行的等效流。
                 .mapToObj(i -> {
-                    List<Item> cart = createCart();
-                    return createOrder(cart);
+                    List<Item> cart = createCart();//创建购物车
+                    return createOrder(cart);//创建订单
                 })
                 .filter(result -> result)
                 .count();
         log.info("success:{} totalRemaining:{} took:{}ms items:{}",
                 success,
-                items.entrySet().stream().map(item -> item.getValue().remaining).reduce(0, Integer::sum),
+                items.entrySet().stream().map(item -> item.getValue().remaining)
+                        .reduce(0, Integer::sum),//使用 associative累积函数对此流的元素执行 reduction ，并返回描述减小值的 Optional （如果有）。
                 System.currentTimeMillis() - begin, items);
         return success;
     }
@@ -98,7 +110,10 @@ public class DeadLockController {
     @RequiredArgsConstructor
     static class Item {
         final String name;
-        int remaining = 1000;
+        int remaining = 1000;// remaining 剩下的(库存)
+
+
+        // ReentrantLock [riː'entrənt] 可重入
         @ToString.Exclude
         ReentrantLock lock = new ReentrantLock();
     }
