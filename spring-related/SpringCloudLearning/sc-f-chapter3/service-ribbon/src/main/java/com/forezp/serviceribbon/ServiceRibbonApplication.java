@@ -17,6 +17,10 @@ public class ServiceRibbonApplication {
         SpringApplication.run( ServiceRibbonApplication.class, args );
     }
 
+    /*
+    * 为了保持向后兼容性，用作默认的负载均衡器实现。但是，Spring Cloud Netflix Ribbon现在处于维护模式，
+    * 因此我们建议改用Spring Cloud LoadBalancer。为此，将的值设置spring.cloud.loadbalancer.ribbon.enabled为false。
+    * */
     @Bean
     @LoadBalanced
     RestTemplate restTemplate() {
