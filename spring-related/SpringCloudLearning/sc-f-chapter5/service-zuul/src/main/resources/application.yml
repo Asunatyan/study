@@ -7,6 +7,7 @@ server:
 spring:
   application:
     name: service-zuul
+#以/api-a/ 开头的请求都转发给service-ribbon服务；以/api-b/开头的请求都转发给service-feign服务
 zuul:
   routes:
     api-a:
