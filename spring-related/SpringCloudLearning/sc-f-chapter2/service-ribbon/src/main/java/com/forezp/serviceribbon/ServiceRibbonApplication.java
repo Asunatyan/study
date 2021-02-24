@@ -18,7 +18,7 @@ public class ServiceRibbonApplication {
     }
 
     @Bean
-    @LoadBalanced
+    @LoadBalanced//restRemplate开启负载均衡的功能。
     RestTemplate restTemplate() {
         return new RestTemplate();
     }

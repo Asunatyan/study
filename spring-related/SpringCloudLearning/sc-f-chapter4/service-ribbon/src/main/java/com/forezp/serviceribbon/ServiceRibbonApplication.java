@@ -12,7 +12,7 @@ import org.springframework.web.client.RestTemplate;
 @SpringBootApplication
 @EnableEurekaClient
 @EnableDiscoveryClient
-@EnableHystrix
+@EnableHystrix//开启Hystrix
 public class ServiceRibbonApplication {
 
     public static void main(String[] args) {

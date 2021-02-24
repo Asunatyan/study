@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @SpringBootApplication
+//@EnableEurekaClient 表明自己是一个eurekaclient.
+// @EnableEurekaClient是不够的，还需要在配置文件中注明自己的服务注册中心的地址，application.yml配置文件
 @EnableEurekaClient
 @RestController
 public class ServiceHiApplication {
