@@ -23,7 +23,7 @@ import java.util.stream.LongStream;
 @Slf4j
 @RestController
 @Controller
-public class lesson1 {
+public class Demo1to1 {
 
 
     private static final ThreadLocal<Integer> currentUser = ThreadLocal.withInitial(() -> null);
@@ -79,12 +79,13 @@ public class lesson1 {
 
     @GetMapping("wrongTest")
     public void wrong() throws InterruptedException {
-        ConcurrentHashMap<String, Long> concurrentHashMap = getData(ITEM_COUNT - 100);
         //初始900个元素
+        ConcurrentHashMap<String, Long> concurrentHashMap = getData(ITEM_COUNT - 100);//ITEM_COUNT = 1000
         log.info("init size:{}", concurrentHashMap.size());
 
-        ForkJoinPool forkJoinPool = new ForkJoinPool(THREAD_COUNT);
+        ForkJoinPool forkJoinPool = new ForkJoinPool(THREAD_COUNT);//THREAD_COUNT = 10
         //使用线程池并发处理逻辑
+        //Runnable
         forkJoinPool.execute(() -> IntStream.rangeClosed(1, 10).parallel().forEach(i -> {
             //查询还需要补充多少个元素
             int gap = ITEM_COUNT - concurrentHashMap.size();
@@ -113,7 +114,6 @@ public class lesson1 {
 2021-01-25 16:04:37.886  INFO 8632 --- [nio-8080-exec-4] com.example.demo.o1.lesson1              : finish size:1288
           * */
     }
-
 
 
     @GetMapping("right")

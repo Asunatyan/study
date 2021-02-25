@@ -14,13 +14,15 @@ import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.LongAdder;
+import java.util.function.BinaryOperator;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 @RestController
 @RequestMapping("01")
 @Slf4j
-public class Demo02 {
+public class Demo1to2 {
+
     /*
     使用 ConcurrentHashMap 来统计，Key 的范围是 10。
     使用最多 10 个并发，循环操作 1000 万次，每次操作累加随机的 Key。
@@ -35,8 +37,9 @@ public class Demo02 {
     private static int ITEM_COUNT = 10;
 
     private Map<String, Long> normaluse() throws InterruptedException {
-        ConcurrentHashMap<String, Long> freqs = new ConcurrentHashMap<>(ITEM_COUNT);
-        ForkJoinPool forkJoinPool = new ForkJoinPool(THREAD_COUNT);
+        ConcurrentHashMap<String, Long> freqs = new ConcurrentHashMap<>(ITEM_COUNT);//10
+        ForkJoinPool forkJoinPool = new ForkJoinPool(THREAD_COUNT);//10
+        //                                                  10000000
         forkJoinPool.execute(() -> IntStream.rangeClosed(1, LOOP_COUNT).parallel().forEach(i -> {
                     //获得一个随机的Key
                     String key = "item" + ThreadLocalRandom.current().nextInt(ITEM_COUNT);//[0-9]
@@ -63,7 +66,23 @@ public class Demo02 {
         forkJoinPool.execute(() -> IntStream.rangeClosed(1, LOOP_COUNT).parallel().forEach(i -> {
                     String key = "item" + ThreadLocalRandom.current().nextInt(ITEM_COUNT);
                     //利用computeIfAbsent()方法来实例化LongAdder，然后利用LongAdder来进行线程安全计数 //absent不存在
+            /* public V computeIfAbsent(K key,
+                                     Function<? super K,? extends V> mappingFunction)
+            如果指定的键尚未与值相关联，则尝试使用给定的映射函数计算其值，并将其输入到此映射中，除非null
+            整个方法调用是以原子方式执行的，因此每个键最多应用一次该函数
+            在计算过程中可能会阻止其他线程对该映射进行的某些尝试更新操作，因此计算应该简单而简单，不得尝试更新此映射的任何其他映射*/
+
+                    //如果不存在就设置新的值到当前的key中
+                    //computeIfAbsent(key, value) value ---> k -> new LongAdder()   匿名内部类 实现 参数为k,返回值为LongAdder 的实现
                     freqs.computeIfAbsent(key, k -> new LongAdder()).increment();
+                    /*
+                    freqs.computeIfAbsent(key, new Function<String, LongAdder>() {
+                        @Override
+                        public LongAdder apply(String k) {
+                            return new LongAdder();
+                        }
+                    }
+                    */
                 }
         ));
         forkJoinPool.shutdown();
@@ -90,6 +109,18 @@ public class Demo02 {
                 //计算value的所有值之和是否等于10000
                 normaluse.entrySet().stream().mapToLong(item -> item.getValue()).reduce(0, Long::sum) == LOOP_COUNT
                 , "normaluse count error");
+        /*T reduce(T identity,
+         BinaryOperator<T> accumulator)
+使用提供的身份值和associative累积功能对此流的元素执行reduction ，并返回减小的值。 这相当于：
+   T result = identity; for (T element : this stream) result = accumulator.apply(result, element) return result;
+
+   API Note:
+总和，最小，最大，平均和字符串连接都是减少的特殊情况。 一个数字流可以表示为：
+   Integer sum = integers.reduce(0, (a, b) -> a+b);
+要么：
+   Integer sum = integers.reduce(0, Integer::sum);
+
+   */
         stopWatch.start("gooduse");
         Map<String, Long> gooduse = gooduse();
         stopWatch.stop();
@@ -104,6 +135,14 @@ public class Demo02 {
 
 
     public static void main(String[] args) {
+
+        BinaryOperator<Integer> binaryOperator = new BinaryOperator<Integer>() {
+            @Override
+            public Integer apply(Integer integer, Integer integer2) {
+                return null;
+            }
+        };
+
 /*        ConcurrentHashMap<String, LongAdder> freqs = new ConcurrentHashMap<>(ITEM_COUNT);
 
         freqs.putIfAbsent();

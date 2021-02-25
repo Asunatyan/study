@@ -16,7 +16,7 @@ import java.util.stream.IntStream;
 @RestController
 @RequestMapping("01")
 @Slf4j
-public class Demo3 {
+public class Demo1to3 {
 
     //测试并发写的性能
     @GetMapping("write")
