@@ -15,6 +15,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -23,6 +24,17 @@ import java.util.stream.IntStream;
 @RequestMapping("deadlock")
 @Slf4j
 public class DeadLockController {
+    @Data
+    @RequiredArgsConstructor
+    static class Item {
+        final String name;
+        int remaining = 1000;// remaining 剩下的(库存)
+
+
+        // ReentrantLock [riː'entrənt] 可重入
+        @ToString.Exclude
+        ReentrantLock lock = new ReentrantLock();
+    }
 
     private ConcurrentHashMap<String, Item> items = new ConcurrentHashMap<>();
 
@@ -30,10 +42,17 @@ public class DeadLockController {
         IntStream.range(0, 10).forEach(i -> items.put("item" + i, new Item("item" + i)));
     }
 
+    //创建购物车
+    private List<Item> createCart() {
+        return IntStream.rangeClosed(1, 3)//从 startInclusive （含）的顺序排列 IntStream到 endInclusive （含），增量步长为1
+                //map翻译成映射,转换
+                .mapToObj(i -> "item" + ThreadLocalRandom.current().nextInt(items.size()))
+                .map(name -> items.get(name)).collect(Collectors.toList());//从购物车里面随机取3个商品
+    }
+
     //创建订单
     private boolean createOrder(List<Item> order) {
         List<ReentrantLock> locks = new ArrayList<>();
-
         for (Item item : order) {
             try {
                 if (item.lock.tryLock(10, TimeUnit.SECONDS)) {
@@ -54,18 +73,18 @@ public class DeadLockController {
         return true;
     }
 
-    //创建购物车
-    private List<Item> createCart() {
-        return IntStream.rangeClosed(1, 3)//从 startInclusive （含）的顺序排列 IntStream到 endInclusive （含），增量步长为1
-                //map翻译成映射,转换
-                .mapToObj(i -> "item" + ThreadLocalRandom.current().nextInt(items.size()))
-                .map(name -> items.get(name)).collect(Collectors.toList());//从购物车里面随机取3个商品
-    }
-
 
     public static void main(String[] args) {
+/*
         ReentrantLock reentrantLock = new ReentrantLock();
         reentrantLock.unlock();
+*/
+
+        long count = IntStream.rangeClosed(1, 10).parallel().mapToObj(i -> false).count();//10
+        long count2 = IntStream.rangeClosed(1, 10).parallel().mapToObj(i -> false).filter(aBoolean -> aBoolean).count();//0
+        long count3 = IntStream.rangeClosed(1, 10).parallel().mapToObj(i -> i % 2 == 0).filter(aBoolean -> aBoolean).count();//5
+        //说明.filter(aaa) aaa是false 的被过滤掉了
+        System.out.println(count + ":" + count2 + ":" + count3);
 
     }
 
@@ -106,15 +125,5 @@ public class DeadLockController {
         return success;
     }
 
-    @Data
-    @RequiredArgsConstructor
-    static class Item {
-        final String name;
-        int remaining = 1000;// remaining 剩下的(库存)
 
-
-        // ReentrantLock [riː'entrənt] 可重入
-        @ToString.Exclude
-        ReentrantLock lock = new ReentrantLock();
-    }
 }
