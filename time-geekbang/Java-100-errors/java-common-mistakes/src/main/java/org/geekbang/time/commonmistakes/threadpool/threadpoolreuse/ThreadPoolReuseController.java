@@ -26,6 +26,7 @@ public class ThreadPoolReuseController {
             threadPool.execute(() -> {
                 String payload = IntStream.rangeClosed(1, 1000000)
                         .mapToObj(__ -> "a")
+                        //	joining(CharSequence delimiter)返回一个 Collector ，按照遇到的顺序连接由指定的分隔符分隔的输入元素。
                         .collect(Collectors.joining("")) + UUID.randomUUID().toString();
                 try {
                     TimeUnit.SECONDS.sleep(1);

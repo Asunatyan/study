@@ -22,9 +22,9 @@ public class ThreadPoolOOMController {
         Executors.newSingleThreadScheduledExecutor().scheduleAtFixedRate(() -> {
             log.info("=========================");
             log.info("Pool Size: {}", threadPool.getPoolSize());
-            log.info("Active Threads: {}", threadPool.getActiveCount());
-            log.info("Number of Tasks Completed: {}", threadPool.getCompletedTaskCount());
-            log.info("Number of Tasks in Queue: {}", threadPool.getQueue().size());
+            log.info("Active Threads-活跃线程数: {}", threadPool.getActiveCount());
+            log.info("Number of Tasks Completed-完成了多少任务: {}", threadPool.getCompletedTaskCount());
+            log.info("Number of Tasks in Queue-队列中还有多少积压任务: {}", threadPool.getQueue().size());
 
             log.info("=========================");
         }, 0, 1, TimeUnit.SECONDS);
@@ -34,7 +34,13 @@ public class ThreadPoolOOMController {
     public void oom1() throws InterruptedException {
 
         //执行器,线程池(Executors)
+        /*
+        newFixedThreadPool
+        线程池的工作队列直接 new 了一个 LinkedBlockingQueue，而默认构造方法的 LinkedBlockingQueue 是一个 Integer.MAX_VALUE 长度的队列，可以认为是无界的：
+        但任务队列是无界的。如果任务较多并且执行较慢的话，队列可能会快速积压，撑爆内存导致 OOM。
+         */
         ThreadPoolExecutor threadPool = (ThreadPoolExecutor) Executors.newFixedThreadPool(1);
+
         printStats(threadPool);
         for (int i = 0; i < 100000000; i++) {
             threadPool.execute(() -> {
@@ -58,13 +64,20 @@ public class ThreadPoolOOMController {
     }
 
     public static void main(String[] args) {
-        System.out.println("");
+        AtomicInteger atomicInteger = new AtomicInteger();
+        System.out.println(atomicInteger.incrementAndGet());//1
     }
 
     @GetMapping("oom2")
     public void oom2() throws InterruptedException {
 
         ThreadPoolExecutor threadPool = (ThreadPoolExecutor) Executors.newCachedThreadPool();
+        /*
+        newCachedThreadPool 方法来获得线程池。
+        这种线程池的最大线程数是 Integer.MAX_VALUE，可以认为是没有上限的，而其工作队列 SynchronousQueue 是一个没有存储空间的阻塞队列
+        这意味着，只要有请求到来，就必须找到一条工作线程来处理，如果当前没有空闲的线程就再创建一条新的。
+        内存很快就会爆满
+         */
         printStats(threadPool);
         for (int i = 0; i < 100000000; i++) {
             threadPool.execute(() -> {
@@ -82,9 +95,17 @@ public class ThreadPoolOOMController {
 
     @GetMapping("right")
     public int right() throws InterruptedException {
+
+        /*
+        AtomicInteger atomicInteger = new AtomicInteger();
+        System.out.println(atomicInteger.incrementAndGet());
+        结果为1
+         */
+
         //使用一个计数器跟踪完成的任务数
         AtomicInteger atomicInteger = new AtomicInteger();
-        //创建一个具有2个核心线程、5个最大线程，使用容量为10的ArrayBlockingQueue阻塞队列作为工作队列的线程池，使用默认的AbortPolicy拒绝策略
+        //创建一个具有2个核心线程、5个最大线程，使用容量为10的ArrayBlockingQueue阻塞队列作为工作队列的线程池，
+        // 使用默认的AbortPolicy拒绝策略,也就是任务添加到线程池失败会抛出 RejectedExecutionException
         ThreadPoolExecutor threadPool = new ThreadPoolExecutor(
                 2, 5,
                 5, TimeUnit.SECONDS,
