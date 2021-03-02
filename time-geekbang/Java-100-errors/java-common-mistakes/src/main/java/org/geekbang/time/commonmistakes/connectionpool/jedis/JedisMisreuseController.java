@@ -18,11 +18,11 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 public class JedisMisreuseController {
 
-    private static JedisPool jedisPool = new JedisPool("127.0.0.1", 6379);
+    private static JedisPool jedisPool = new JedisPool("129.211.65.95", 6379);
 
     @PostConstruct
     public void init() {
-        try (Jedis jedis = new Jedis("127.0.0.1", 6379)) {
+        try (Jedis jedis = new Jedis("129.211.65.95", 6379);) {
             Assert.isTrue("OK".equals(jedis.set("a", "1")), "set a = 1 return OK");
             Assert.isTrue("OK".equals(jedis.set("b", "2")), "set b = 2 return OK");
         }
@@ -33,7 +33,7 @@ public class JedisMisreuseController {
 
     @GetMapping("/wrong")
     public void wrong() throws InterruptedException {
-        Jedis jedis = new Jedis("127.0.0.1", 6379);
+        Jedis jedis = new Jedis("129.211.65.95", 6379);
         new Thread(() -> {
             for (int i = 0; i < 1000; i++) {
                 String result = jedis.get("a");
@@ -90,7 +90,7 @@ public class JedisMisreuseController {
         JedisPoolConfig config = new JedisPoolConfig();
         config.setMaxTotal(1);
         config.setMaxWaitMillis(waittimeout);
-        try (JedisPool jedisPool = new JedisPool(config, "127.0.0.1", 6379, conntimeout);
+        try (JedisPool jedisPool = new JedisPool(config, "129.211.65.95", 6379, conntimeout);
              Jedis jedis = jedisPool.getResource()) {
             return jedis.set("test", "test");
         }
