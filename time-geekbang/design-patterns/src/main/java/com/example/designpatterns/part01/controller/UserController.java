@@ -18,7 +18,7 @@ public class UserController {
     @RequestMapping("/register")
     public void register(UserVo user) {
         long startTimestamp = System.currentTimeMillis();
-        metrics.recordTimestamp("register", startTimestamp);
+        metrics.recordAccessTimestamp("register", startTimestamp);
         long respTime = System.currentTimeMillis() - startTimestamp;
         metrics.recordResponseTime("register", respTime);
     }
@@ -26,7 +26,7 @@ public class UserController {
     @RequestMapping("/login")
     public UserVo login(String telephone, String password) {
         long startTimestamp = System.currentTimeMillis();
-        metrics.recordTimestamp("login", startTimestamp);
+        metrics.recordAccessTimestamp("login", startTimestamp);
         long respTime = System.currentTimeMillis() - startTimestamp;
         metrics.recordResponseTime("login", respTime);
         return new UserVo(13, "zs", "1233333333", "123");

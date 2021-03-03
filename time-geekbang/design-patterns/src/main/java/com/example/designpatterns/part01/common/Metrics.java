@@ -13,7 +13,7 @@ import java.util.concurrent.TimeUnit;
 public class Metrics {
     // Map的key是接口名称，value对应接口请求的响应时间或时间戳；
     private Map<String, List<Double>> responseTimes = new HashMap<>();//请求的响应时间
-    private Map<String, List<Double>> timestamps = new HashMap<>();//访问时间
+    private Map<String, List<Double>> accessTimestamps = new HashMap<>();//访问时间
     private ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
 
     public void recordResponseTime(String apiName, double responseTime) {
@@ -21,11 +21,16 @@ public class Metrics {
         responseTimes.get(apiName).add(responseTime);
     }
 
-    public void recordTimestamp(String apiName, double timestamp) {
-        timestamps.putIfAbsent(apiName, new ArrayList<>());
-        timestamps.get(apiName).add(timestamp);
+    public void recordAccessTimestamp(String apiName, double timestamp) {
+        accessTimestamps.putIfAbsent(apiName, new ArrayList<>());
+        accessTimestamps.get(apiName).add(timestamp);
     }
 
+    /**
+     *
+     * @param period  周期
+     * @param unit 单位
+     */
     public void startRepeatedReport(long period, TimeUnit unit) {
         executor.scheduleAtFixedRate(new Runnable() {
             @Override
@@ -40,7 +45,7 @@ public class Metrics {
                     stats.get(apiName).put("avg", avg(apiRespTimes));
                 }
 
-                for (Map.Entry<String, List<Double>> entry : timestamps.entrySet()) {
+                for (Map.Entry<String, List<Double>> entry : accessTimestamps.entrySet()) {
                     String apiName = entry.getKey();
                     List<Double> apiTimestamps = entry.getValue();
                     stats.putIfAbsent(apiName, new HashMap<>());
