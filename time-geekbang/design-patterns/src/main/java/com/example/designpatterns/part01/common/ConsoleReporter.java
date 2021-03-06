@@ -37,6 +37,7 @@ scheduleAtFixedRate(Runnable command, long initialDelay, long period, TimeUnit u
 创建并执行在给定的初始延迟之后，随后以给定的时间段首先启用的周期性动作; 那就是执行将在initialDelay之后开始，然后是initialDelay+period ，然后是initialDelay + 2 * period ，等等。
 */
         // 第4个代码逻辑：定时触发第1、2、3代码逻辑的执行；
+        //步骤1,2,3使得整个方法的职责不够单一
         executor.scheduleAtFixedRate(new Runnable() {
             @Override
             public void run() {

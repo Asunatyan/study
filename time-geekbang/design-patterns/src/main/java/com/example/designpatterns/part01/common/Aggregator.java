@@ -17,18 +17,18 @@ public class Aggregator {
       ++count;
       double respTime = requestInfo.getResponseTime();
       if (maxRespTime < respTime) {
-        maxRespTime = respTime;
+        maxRespTime = respTime;//计算最大响应时间
       }
       if (minRespTime > respTime) {
-        minRespTime = respTime;
+        minRespTime = respTime;//计算最小响应时间
       }
-      sumRespTime += respTime;
+      sumRespTime += respTime;//计算响应的次数
     }
     if (count != 0) {
-      avgRespTime = sumRespTime / count;
+      avgRespTime = sumRespTime / count;//计算平均的响应时间
     }
-    long tps = (long)(count / durationInMillis * 1000);
-    requestInfos.sort((o1, o2) -> {
+    long tps = (long)(count / durationInMillis * 1000);//计算tps
+    requestInfos.sort((o1, o2) -> {//通过响应时间进行排序
       double diff = o1.getResponseTime() - o2.getResponseTime();
       return Double.compare(diff, 0.0);
       /*if (diff < 0.0) {
