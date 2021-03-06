@@ -19,19 +19,27 @@ public class RandomIdGenerator implements LogTraceIdGenerator {
     private static final Logger logger = LoggerFactory.getLogger(RandomIdGenerator.class);
 
     @Override
-    public String generate() {
-        String substrOfHostName = getLastfieldOfHostName();
+    public String generate() throws IdGenerationFailureException {
+        String substrOfHostName = null;
+        try {
+            substrOfHostName = getLastfieldOfHostName();
+        } catch (UnknownHostException e) {
+            //封装成新的异常,不向调用者暴露细节
+            //UnknownHostException 异常跟 generate() 函数，在业务概念上没有相关性。
+            //从代码封装的角度来讲，我们不希望将 UnknownHostException 这个比较底层的异常，暴露给更上层的代码，也就是调用 generate() 函数的代码。而且，调用者拿到这个异常的时候，并不能理解这个异常到底代表了什么，也不知道该如何处理。
+            throw new IdGenerationFailureException("host name is empty.");
+        }
         long currentTimeMillis = System.currentTimeMillis();
         String randomString = generateRandomAlphameric(8);
         return String.format("%s-%d-%s",
                 substrOfHostName, currentTimeMillis, randomString);
     }
 
-    private String getLastfieldOfHostName(){
+    private String getLastfieldOfHostName() throws UnknownHostException {
 
         //对于 generate() 函数，如果本机名获取失败，函数返回什么？这样的返回值是否合理？
         String substrOfHostName = null;
-        try {
+        //try {
             String hostName = InetAddress.getLocalHost().getHostName();
 
             substrOfHostName = getLastSubstrSplittedByDot(hostName);
@@ -39,12 +47,12 @@ public class RandomIdGenerator implements LogTraceIdGenerator {
             /*String[] tokens = hostName.split("\\.");
             substrOfHostName = tokens[tokens.length - 1];*/
             return substrOfHostName;
-        } catch (UnknownHostException e) {
+       // } catch (UnknownHostException e) {//这是一个异常行为,所以往上面抛出去
             //对于 getLastFiledOfHostName() 函数，是否应该将 UnknownHostException 异常在函数内部吞掉（try-catch 并打印日志）？
             // 还是应该将异常继续往上抛出？如果往上抛出的话，是直接把 UnknownHostException 异常原封不动地抛出，还是封装成新的异常抛出？
-            logger.warn("Failed to get the host name.", e);
-        }
-        return substrOfHostName;
+            //logger.warn("Failed to get the host name.", e);
+        //}
+        //return substrOfHostName;
     }
 
     protected String getLastSubstrSplittedByDot(String hostName) {
@@ -71,6 +79,11 @@ public class RandomIdGenerator implements LogTraceIdGenerator {
             }
         }
         return new String(randomChars);
+    }
+
+    private class IdGenerationFailureException extends Throwable {
+        public IdGenerationFailureException(String s) {
+        }
     }
 }
 /*

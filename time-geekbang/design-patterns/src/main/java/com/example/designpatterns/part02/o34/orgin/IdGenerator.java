@@ -16,7 +16,7 @@ public class IdGenerator {
       String hostName = InetAddress.getLocalHost().getHostName();
       String[] tokens = hostName.split("\\.");
       if (tokens.length > 0) {
-        hostName = tokens[tokens.length - 1];
+        hostName = tokens[tokens.length - 1];  //两次hostName的含义不同
       }
       char[] randomChars = new char[8];
       int count = 0;
@@ -37,6 +37,7 @@ public class IdGenerator {
       id = String.format("%s-%d-%s", hostName,
               System.currentTimeMillis(), new String(randomChars));
     } catch (UnknownHostException e) {
+      //对异常的处理是在 IdGenerator 内部将其吐掉，然后打印一条报警日志，并没有继续往上抛出。这样的异常处理是否得当呢
       logger.warn("Failed to get the host name.", e);
     }
 
