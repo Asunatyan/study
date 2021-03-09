@@ -81,7 +81,7 @@ public class RandomIdGenerator implements LogTraceIdGenerator {
         return new String(randomChars);
     }
 
-    private class IdGenerationFailureException extends Throwable {
+    class IdGenerationFailureException extends Throwable {
         public IdGenerationFailureException(String s) {
         }
     }
