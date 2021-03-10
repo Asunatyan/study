@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -40,7 +41,6 @@ public class ConsoleReporter extends ScheduledReporter {
 
 
         // 创建字符串对象
-        StringBuilder sb = new StringBuilder("sb字符串后面将会跟随####");
         // 声明函数对象 consumer
         //Consumer<StringBuilder> consumer = new Consumer<StringBuilder>() {
         //            @Override
@@ -48,19 +48,73 @@ public class ConsoleReporter extends ScheduledReporter {
         //                str.append("大SB");
         //            }
         //        };
-        Consumer<StringBuilder> consumer = (str) -> str.append("123");
         // 调用Consumer.accept()方法接收参数
+        StringBuilder sb = new StringBuilder("sb字符串后面将会跟随####");
+        Consumer<StringBuilder> consumer = (str) -> str.append("123");
         consumer.accept(sb);
         System.out.println(sb.toString());
 
         //相当于是 arg参数是accept(参数) 的参数传递过来的
         Consumer<Integer> a = arg -> System.out.println(arg.compareTo(123));
         a.accept(1111);
+        System.out.println("----------------------------------");
+
+        Function<String, Integer> stringFunction = new Function<String, Integer>() {
+            @Override
+            public Integer apply(String s) {
+                return "123".equals(s) ? 1 : 0;
+            }
+        };
+        System.out.println(stringFunction.apply("123333"));
+
+        System.out.println("-----------------------------------------");
+
+        BiConsumer<String, Integer> integerBiConsumer = new BiConsumer<String, Integer>() {
+            @Override
+            public void accept(String s, Integer integer) {
+                System.out.println(s + ":" + integer);
+            }
+        };
+        integerBiConsumer.accept("Ceshi", 123);//输出Ceshi:123 说明执行了accept方法一次
+
+
+        BiConsumer<String, Integer> testIntegerBiConsumer = integerBiConsumer.andThen(new BiConsumer<String, Integer>() {
+            @Override
+            public void accept(String s, Integer integer) {
+                System.out.println("123" + integer);
+            }
+        });
+        /*
+        *     default BiConsumer<T, U> andThen(BiConsumer<? super T, ? super U> after) {
+                Objects.requireNonNull(after);
+
+                return (l, r) -> {
+                    accept(l, r);
+                    after.accept(l, r);
+                };
+            }
+        * */
+        //说明先执行accept()方法,之后会执行andThen方法里面的accept方法
+        testIntegerBiConsumer.accept("666", 666);//输出666:666 /n 123666
+        integerBiConsumer.accept("Ceshi", 123);//输出Ceshi:123 说明执行了accept方法一次
+
+        System.out.println("-----------------------------------------");
+
+
+        BiConsumer<String, Function<String, Integer>> biConsumer = new BiConsumer<String, Function<String, Integer>>() {
+            @Override
+            public void accept(String s, Function<String, Integer> stringIntegerFunction) {
+
+            }
+        };
+
+        biConsumer.accept("123", stringFunction);
 
 
     }
 
-    /*public BiConsumer<AbstractProductServiceRequest, Function<ProductServiceQueryRequest, ProductServiceQueryResponse>> operateConsumer(){
+/*    // 参数是 BiConsumer(AbstractProductServiceRequest) 返回Function<ProductServiceQueryRequest, ProductServiceQueryResponse> 参数是ProductServiceQueryRequest 返回ProductServiceQueryResponse
+    public BiConsumer<AbstractProductServiceRequest, Function<ProductServiceQueryRequest, ProductServiceQueryResponse>> operateConsumer(){
         switch (serviceOperationEnum) {
             case OPEN:
                 return openConsumer();
@@ -69,7 +123,10 @@ public class ConsoleReporter extends ScheduledReporter {
             default:
                 throw new RuntimeException("not support OperationType");
         }
-    }
+    }*/
+
+
+    /*
 
     public class ShapeFactory {
         final static Map<String, Supplier<Shape>> map = new HashMap<>();

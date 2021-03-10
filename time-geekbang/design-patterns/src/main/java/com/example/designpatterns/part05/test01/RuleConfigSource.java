@@ -1,8 +1,8 @@
-/*
-package com.example.designpatterns.part05;
+
+package com.example.designpatterns.part05.test01;
 
 public class RuleConfigSource {
-  public RuleConfig load(String ruleConfigFilePath) {
+  public RuleConfig load(String ruleConfigFilePath) throws InvalidRuleConfigException {
     //Extension拓展
     String ruleConfigFileExtension = getFileExtension(ruleConfigFilePath);
     IRuleConfigParser parser = null;
@@ -10,11 +10,7 @@ public class RuleConfigSource {
       parser = new JsonRuleConfigParser();
     } else if ("xml".equalsIgnoreCase(ruleConfigFileExtension)) {
       parser = new XmlRuleConfigParser();
-    } else if ("yaml".equalsIgnoreCase(ruleConfigFileExtension)) {
-      parser = new YamlRuleConfigParser();
-    } else if ("properties".equalsIgnoreCase(ruleConfigFileExtension)) {
-      parser = new PropertiesRuleConfigParser();
-    } else {
+    }  else {
       throw new InvalidRuleConfigException(
              "Rule config file format is not supported: " + ruleConfigFilePath);
     }
@@ -29,4 +25,4 @@ public class RuleConfigSource {
     //...解析文件名获取扩展名，比如rule.json，返回json
     return "json";
   }
-}*/
+}
