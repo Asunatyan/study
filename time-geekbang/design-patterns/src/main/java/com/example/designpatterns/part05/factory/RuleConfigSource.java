@@ -1,5 +1,5 @@
 
-package com.example.designpatterns.part05.test01;
+package com.example.designpatterns.part05.factory;
 
 public class RuleConfigSource {
   public RuleConfig load(String ruleConfigFilePath) throws InvalidRuleConfigException {

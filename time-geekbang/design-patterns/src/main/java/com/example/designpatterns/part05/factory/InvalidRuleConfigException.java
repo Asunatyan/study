@@ -1,4 +1,4 @@
-package com.example.designpatterns.part05.test01;
+package com.example.designpatterns.part05.factory;
 
 /**
  * Description:
