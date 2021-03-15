@@ -1,4 +1,4 @@
-package com.example.designpatterns.part06.observer.eventBus;
+package com.example.designpatterns.part07.observer.eventBus;
 
 import java.util.concurrent.Executor;
 

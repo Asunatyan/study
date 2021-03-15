@@ -1,4 +1,4 @@
-package com.example.designpatterns.part06.observer.service;
+package com.example.designpatterns.part07.observer.service;
 
 /**
  * Description:

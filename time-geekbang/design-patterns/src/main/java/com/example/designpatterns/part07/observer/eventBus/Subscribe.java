@@ -1,4 +1,4 @@
-package com.example.designpatterns.part06.observer.eventBus;
+package com.example.designpatterns.part07.observer.eventBus;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

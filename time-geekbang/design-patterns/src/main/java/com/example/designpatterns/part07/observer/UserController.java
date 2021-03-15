@@ -1,8 +1,8 @@
-package com.example.designpatterns.part06.observer;
+package com.example.designpatterns.part07.observer;
 
-import com.example.designpatterns.part06.observer.eventBus.AsyncEventBus;
-import com.example.designpatterns.part06.observer.eventBus.EventBus;
-import com.example.designpatterns.part06.observer.service.UserService;
+import com.example.designpatterns.part07.observer.eventBus.AsyncEventBus;
+import com.example.designpatterns.part07.observer.eventBus.EventBus;
+import com.example.designpatterns.part07.observer.service.UserService;
 
 import java.util.List;
 import java.util.concurrent.Executors;

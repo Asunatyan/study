@@ -1,6 +1,6 @@
-package com.example.designpatterns.part06.observer.service.observer;
+package com.example.designpatterns.part07.observer.service.observer;
 
-import com.example.designpatterns.part06.observer.eventBus.Subscribe;
+import com.example.designpatterns.part07.observer.eventBus.Subscribe;
 
 /**
  * Description:

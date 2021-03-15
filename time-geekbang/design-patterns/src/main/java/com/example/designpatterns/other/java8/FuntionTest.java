@@ -12,6 +12,12 @@ public class FuntionTest {
     public static void main(String[] args) {
         System.out.println("-------------Function---------------------");
         Function<String, Boolean> stringFunction = "123"::equals;
+        Function<String, Boolean> stringFunction2 = new Function<String, Boolean>() {
+            @Override
+            public Boolean apply(String s) {
+                return null;
+            }
+        };
         System.out.println(stringFunction.apply("123333"));
 
 
