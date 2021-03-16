@@ -1,4 +1,4 @@
-package com.example.designpatterns.part07.status;
+package com.example.designpatterns.part07.status.selecttable;
 
 public enum Event {
   GOT_MUSHROOM(0),

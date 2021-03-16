@@ -1,12 +1,13 @@
-package com.example.designpatterns.part07.status;
+package com.example.designpatterns.part07.status.selecttable;
+
+import com.example.designpatterns.part07.status.State;
 
 import static com.example.designpatterns.part07.status.State.*;
 
 /**
- * Description:
- * date: 2021/3/16 11:06
- *
- * @author dqk
+ 在查表法的代码实现中，事件触发的动作只是简单的积分加减，所以，我们用一个 int 类型的二维数组 actionTable 就能表示，
+ 二维数组中的值表示积分的加减值。但是，如果要执行的动作并非这么简单，而是一系列复杂的逻辑操作（比如加减积分、写数据库，还有可能发送消息通知等等），
+ 我们就没法用如此简单的二维数组来表示了。这也就是说，查表法的实现方式有一定局限性。
  */
 public class MarioStateMachine {
   private int score;
