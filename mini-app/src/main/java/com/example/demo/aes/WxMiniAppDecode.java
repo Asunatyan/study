@@ -9,7 +9,7 @@ import java.security.Security;
 import java.util.Base64;
 
 /**
- * Description:
+ * Description: 微信小测序的用户信息解密类
  * date: 2021/5/6 下午 03:27
  *
  * @author dqk
@@ -20,26 +20,9 @@ public class WxMiniAppDecode {
     }
     public static void main(String[] args) {
         String appIdappId = "wx4f4bc4dec97d474b";
-        String sessionKey = "tiihtNczf5v6AKRyjwEUhQ==";
-        String encryptedData =
-                "CiyLU1Aw2KjvrjMdj8YKliAjtP4gsMZM" +
-                        "QmRzooG2xrDcvSnxIMXFufNstNGTyaGS" +
-                        "9uT5geRa0W4oTOb1WT7fJlAC+oNPdbB+" +
-                        "3hVbJSRgv+4lGOETKUQz6OYStslQ142d" +
-                        "NCuabNPGBzlooOmB231qMM85d2/fV6Ch" +
-                        "evvXvQP8Hkue1poOFtnEtpyxVLW1zAo6" +
-                        "/1Xx1COxFvrc2d7UL/lmHInNlxuacJXw" +
-                        "u0fjpXfz/YqYzBIBzD6WUfTIF9GRHpOn" +
-                        "/Hz7saL8xz+W//FRAUid1OksQaQx4CMs" +
-                        "8LOddcQhULW4ucetDf96JcR3g0gfRK4P" +
-                        "C7E/r7Z6xNrXd2UIeorGj5Ef7b1pJAYB" +
-                        "6Y5anaHqZ9J6nKEBvB4DnNLIVWSgARns" +
-                        "/8wR2SiRS7MNACwTyrGvt9ts8p12PKFd" +
-                        "lqYTopNHR1Vf7XjfhQlVsAJdNiKdYmYV" +
-                        "oKlaRv85IfVunYzO0IKXsyl7JCUjCpoG" +
-                        "20f0a04COwfneQAGGwd5oa+T8yO5hzuy" +
-                        "Db/XcxxmK01EpqOyuxINew==";
-        String iv = "r7BXXKkLb8qrSNn05n0qiA==";
+        String sessionKey = "Ot6L76Jb0g2Dlu0CknFThQ==";
+        String encryptedData = "S+Jd46t7Kq92VhSm0UxB0NPvU2r8L37GmyrEd2A6Hu5LZlAHsVICDfQTxh9NuFHYSAEWWM+PCZ6r5QNAyEyT9UCls7sm4mxy3GrAVNE9wsQPqswRAI+vvgBwUeTeSmFTQbEr08sgmNrJjh28KsIjDCMbOkCDrzkJ5RmZVAnr7bk4MxgCviHNyXtq/sO2nYfFUpCJnZoL4UzFAnedijgh+w==";
+        String iv = "Syp15RgNIQY636C4/LAHmA==";
 
 
         //Cipher cipher = null;
@@ -53,7 +36,7 @@ public class WxMiniAppDecode {
 
             cipher.init(Cipher.DECRYPT_MODE, sKeySpec, params);// 初始化
             byte[] result = cipher.doFinal(Base64.getDecoder().decode(encryptedData));
-            System.out.println(String.valueOf(result));
+            System.out.println(new String(result));
         } catch (Exception e) {
             e.printStackTrace();
         }
