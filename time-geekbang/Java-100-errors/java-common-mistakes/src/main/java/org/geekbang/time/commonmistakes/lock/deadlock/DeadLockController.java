@@ -34,6 +34,16 @@ public class DeadLockController {
         // ReentrantLock [riː'entrənt] 可重入
         @ToString.Exclude
         ReentrantLock lock = new ReentrantLock();
+        /**
+         * （1）tryLock仅在其他线程未保持锁时，才获取锁，并立即返回true。
+         *如果锁已经被其他线程保持，就立即返回false。tryLock(long timeout,TimeUnit unit)，可以增加时间限制，如果超过该时间段还没获得锁，返回false。
+         *
+         * （2）lock能获得锁就返回true，不能的话一直等待获得锁
+         *
+         * （3）lock和lockInterruptibly，如果两个线程分别执行这两个方法，但此时中断这两个线程，前者不会抛出异常，而后者会抛出异常InterruptedException。
+         * lockInterruptibly方法在其他线程在中断当前线程时，在抛出异常的同时，会停止等待获取锁。
+         *
+         */
     }
 
     private ConcurrentHashMap<String, Item> items = new ConcurrentHashMap<>();
