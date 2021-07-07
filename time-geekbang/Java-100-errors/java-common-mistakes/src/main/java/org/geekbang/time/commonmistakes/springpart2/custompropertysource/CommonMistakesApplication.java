@@ -51,7 +51,7 @@ public class CommonMistakesApplication {
 
         //这里我把值写死了，实际应用中可以从外部服务来获取
         Map<String, String> property = new HashMap<>();
-        property.put(MYSQL_URL_PLACEHOLDER, "jdbc:mysql://localhost:6657/common_mistakes?characterEncoding=UTF-8&useSSL=false");
+        property.put(MYSQL_URL_PLACEHOLDER, "jdbc:mysql://112.74.47.37:3306/common_mistakes?characterEncoding=UTF-8&useSSL=false");
         property.put(MYSQL_USERNAME_PLACEHOLDER, "root");
         property.put(MYSQL_PASSWORD_PLACEHOLDER, "kIo9u7Oi0eg");
 

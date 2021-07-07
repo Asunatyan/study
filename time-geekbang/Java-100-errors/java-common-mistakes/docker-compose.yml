@@ -5,7 +5,7 @@ services:
     container_name: common-mistakes-redis-3
     command: redis-server --appendonly yes
     ports:
-      - "6379:6379"
+      - "20200:20200"
   mysql57:
     image: mysql:5.7
     container_name: common-mistakes-mysql57

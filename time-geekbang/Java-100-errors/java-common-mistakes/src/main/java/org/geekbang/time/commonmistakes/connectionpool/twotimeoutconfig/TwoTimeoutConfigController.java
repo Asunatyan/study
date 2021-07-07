@@ -49,7 +49,7 @@ public class TwoTimeoutConfigController {
         JedisPoolConfig config = new JedisPoolConfig();
         config.setMaxTotal(1);
         config.setMaxWaitMillis(10000);
-        try (JedisPool jedisPool = new JedisPool(config, "127.0.0.1", 6379, 5000);
+        try (JedisPool jedisPool = new JedisPool(config, "127.0.0.1", 20200, 5000);
              Jedis jedis = jedisPool.getResource()) {
             return jedis.set("test", "test");
         }
