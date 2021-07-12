@@ -176,7 +176,7 @@ public class CodeGenerator2 {
         // 写于父类中的公共字段
         strategy.setSuperEntityColumns("remark");
         //String[] split = scanner("表名，多个英文逗号分割").split(",");
-        strategy.setInclude("t_user".split(","));
+        strategy.setInclude("t_user,t_bottle_detail,t_bottle".split(","));
         strategy.setTablePrefix("t_");
         strategy.setFieldPrefix("f_");
         strategy.setEntityTableFieldAnnotationEnable(true);
