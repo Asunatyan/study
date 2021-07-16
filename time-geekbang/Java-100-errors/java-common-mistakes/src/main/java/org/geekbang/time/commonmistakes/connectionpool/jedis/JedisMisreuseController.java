@@ -18,11 +18,11 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 public class JedisMisreuseController {
 
-    private static JedisPool jedisPool = new JedisPool("112.74.47.37", 20200);
+    private static JedisPool jedisPool = new JedisPool("112.74.47.37", 6399);
 
     @PostConstruct
     public void init() {
-        try (Jedis jedis = new Jedis("112.74.47.37", 20200);) {
+        try (Jedis jedis = new Jedis("112.74.47.37", 6399);) {
             Assert.isTrue("OK".equals(jedis.set("a", "1")), "set a = 1 return OK");
             Assert.isTrue("OK".equals(jedis.set("b", "2")), "set b = 2 return OK");
         }
@@ -33,12 +33,12 @@ public class JedisMisreuseController {
 
     @GetMapping("/wrong")
     public void wrong() throws InterruptedException {
-        Jedis jedis = new Jedis("112.74.47.37", 20200);
+        Jedis jedis = new Jedis("112.74.47.37", 6399);
         new Thread(() -> {
             for (int i = 0; i < 1000; i++) {
                 String result = jedis.get("a");
                 if (!"1".equals(result)) {
-                    log.warn("Expect a to be 1 but found {}", result);
+                        log.warn("Expect a to be 1 but found {}", result);
                     return;
                 }
             }
@@ -90,7 +90,7 @@ public class JedisMisreuseController {
         JedisPoolConfig config = new JedisPoolConfig();
         config.setMaxTotal(1);
         config.setMaxWaitMillis(waittimeout);
-        try (JedisPool jedisPool = new JedisPool(config, "112.74.47.37", 20200, conntimeout);
+        try (JedisPool jedisPool = new JedisPool(config, "112.74.47.37", 6399, conntimeout);
              Jedis jedis = jedisPool.getResource()) {
             return jedis.set("test", "test");
         }
