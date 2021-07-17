@@ -12,7 +12,13 @@ public class BankService {
 
     public static String createUser(String name, String identity, String mobile, int age) throws IOException {
         StringBuilder stringBuilder = new StringBuilder();
+        /**
+         * 0	数字前面补0(加密常用)	(“%04d”, 99)->0099
+         *
+         */
+
         //字符串靠左，多余的地方_填充
+        //Class Formatter
         stringBuilder.append(String.format("%-10s", name).replace(' ', '_'));
         //字符串靠左，多余的地方_填充
         stringBuilder.append(String.format("%-18s", identity).replace(' ', '_'));

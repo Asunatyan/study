@@ -9,6 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 将不同类相同的东西抽出来,不同的方法抽象成抽象方法
+ */
 public abstract class AbstractCart {
 
     public Cart process(long userId, Map<Long, Integer> items) {

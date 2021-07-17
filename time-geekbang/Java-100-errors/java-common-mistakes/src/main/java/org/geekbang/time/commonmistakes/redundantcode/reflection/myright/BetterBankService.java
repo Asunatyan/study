@@ -1,4 +1,4 @@
-package org.geekbang.time.commonmistakes.redundantcode.reflection.right;
+package org.geekbang.time.commonmistakes.redundantcode.reflection.myright;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -60,24 +60,28 @@ public class BetterBankService {
                         e.printStackTrace();
                     }
                     //根据字段类型以正确的填充方式格式化字符串
-                    switch (bankAPIField.type()) {
-                        case "S": {
-                            stringBuilder.append(String.format("%-" + bankAPIField.length() + "s", value.toString()).replace(' ', '_'));
-                            break;
-                        }
-                        case "N": {
-                            stringBuilder.append(String.format("%" + bankAPIField.length() + "s", value.toString()).replace(' ', '0'));
-                            break;
-                        }
-                        case "M": {
-                            if (!(value instanceof BigDecimal))
-                                throw new RuntimeException(String.format("{} 的 {} 必须是BigDecimal", api, field));
-                            stringBuilder.append(String.format("%0" + bankAPIField.length() + "d", ((BigDecimal) value).setScale(2, RoundingMode.DOWN).multiply(new BigDecimal("100")).longValue()));
-                            break;
-                        }
-                        default:
-                            break;
-                    }
+
+                    stringBuilder.append(bankAPIField.type().format(value, bankAPIField));
+
+                    //使用策略模式代替
+//                    switch (bankAPIField.type()) {
+//                        case "S": {
+//                            stringBuilder.append(String.format("%-" + bankAPIField.length() + "s", value.toString()).replace(' ', '_'));
+//                            break;
+//                        }
+//                        case "N": {
+//                            stringBuilder.append(String.format("%" + bankAPIField.length() + "s", value.toString()).replace(' ', '0'));
+//                            break;
+//                        }
+//                        case "M": {
+//                            if (!(value instanceof BigDecimal))
+//                                throw new RuntimeException(String.format("{} 的 {} 必须是BigDecimal", api, field));
+//                            stringBuilder.append(String.format("%0" + bankAPIField.length() + "d", ((BigDecimal) value).setScale(2, RoundingMode.DOWN).multiply(new BigDecimal("100")).longValue()));
+//                            break;
+//                        }
+//                        default:
+//                            break;
+//                    }
                 });
         //签名逻辑
         stringBuilder.append(DigestUtils.md2Hex(stringBuilder.toString()));

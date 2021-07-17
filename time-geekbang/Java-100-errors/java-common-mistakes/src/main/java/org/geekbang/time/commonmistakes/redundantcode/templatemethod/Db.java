@@ -25,6 +25,7 @@ public class Db {
         return "Normal";
     }
 
+    //Coupon优惠券  Percent百分比
     public static int getUserCouponPercent(long userId) {
         return 90;
     }

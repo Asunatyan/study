@@ -30,7 +30,10 @@ public class VipUserCart {
             //购买两件以上相同商品，第三件开始享受一定折扣
             if (item.getQuantity() > 2) {
                 item.setCouponPrice(item.getPrice()
-                        .multiply(BigDecimal.valueOf(100 - Db.getUserCouponPercent(userId)).divide(new BigDecimal("100")))
+                        //divide 除
+                        //multiply 乘
+                        .multiply(BigDecimal.valueOf(100 - Db.getUserCouponPercent(userId))//优惠的百分比
+                                .divide(new BigDecimal("100")))
                         .multiply(BigDecimal.valueOf(item.getQuantity() - 2)));
             } else {
                 item.setCouponPrice(BigDecimal.ZERO);
@@ -40,6 +43,7 @@ public class VipUserCart {
         cart.setTotalItemPrice(cart.getItems().stream().map(item -> item.getPrice().multiply(BigDecimal.valueOf(item.getQuantity()))).reduce(BigDecimal.ZERO, BigDecimal::add));
         cart.setTotalDeliveryPrice(cart.getItems().stream().map(Item::getDeliveryPrice).reduce(BigDecimal.ZERO, BigDecimal::add));
         cart.setTotalDiscount(cart.getItems().stream().map(Item::getCouponPrice).reduce(BigDecimal.ZERO, BigDecimal::add));
+        //subtract 减去
         cart.setPayPrice(cart.getTotalItemPrice().add(cart.getTotalDeliveryPrice()).subtract(cart.getTotalDiscount()));
         return cart;
     }
